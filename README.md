@@ -35,6 +35,23 @@ enable_memory = true
 memory_short_term_expiration_days = 30
 ```
 
+### AgentCore Code Interpreter
+
+```hcl
+name = "myagent"
+
+enable_code_interpreter = true
+```
+
+### AgentCore Browser
+
+```hcl
+name = "myagent"
+
+enable_browser = true
+```
+
+
 ## Development
 
 ```

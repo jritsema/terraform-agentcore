@@ -54,10 +54,12 @@ resource "aws_bedrockagentcore_agent_runtime" "main" {
   # and include MEMORY_ID when memory is enabled
   environment_variables = length(var.environment_variables) == 0 ? merge(
     { "DUMMY" = "placeholder" },
-    var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {}
+    var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {},
+    var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {}
     ) : merge(
     var.environment_variables,
-    var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {}
+    var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {},
+    var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {}
   )
 
   protocol_configuration {
@@ -200,19 +202,6 @@ resource "aws_iam_role_policy" "agentcore_runtime" {
           "arn:aws:bedrock:*::foundation-model/*",
           "arn:aws:bedrock:${local.region_account}:*"
         ]
-      },
-      {
-        Sid    = "CreateMemory"
-        Effect = "Allow"
-        Action = [
-          "bedrock-agentcore:CreateMemory",
-          "bedrock-agentcore:CreateEvent",
-          "bedrock-agentcore:ListMemories",
-          "bedrock-agentcore:ListEvents",
-          "bedrock-agentcore:DeleteMemory",
-          "bedrock-agentcore:RetrieveMemoryRecords",
-        ]
-        Resource = ["*"]
       },
     ]
   })
