@@ -15,11 +15,17 @@ variable "enable_memory" {
   default     = false
 }
 
-# variable "enable_code_interpreter" {
-#   description = "Enable AgentCore Code Interpreter"
-#   type        = bool
-#   default     = false
-# }
+variable "enable_code_interpreter" {
+  description = "Enable AgentCore Code Interpreter"
+  type        = bool
+  default     = false
+}
+
+variable "enable_browser" {
+  description = "Enable AgentCore Browser"
+  type        = bool
+  default     = false
+}
 
 variable "server_protocol" {
   description = "Server protocol for AgentCore Runtime"
@@ -49,7 +55,7 @@ variable "memory_short_term_expiration_days" {
   default     = 30
 }
 
-variable "default_tags" {
+variable "tags" {
   description = "Default tags to apply to all resources"
   type        = map(string)
   default     = {}
