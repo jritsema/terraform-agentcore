@@ -209,7 +209,8 @@ resource "aws_iam_role_policy" "agentcore_runtime" {
           "bedrock-agentcore:CreateEvent",
           "bedrock-agentcore:ListMemories",
           "bedrock-agentcore:ListEvents",
-          "bedrock-agentcore:DeleteMemory"
+          "bedrock-agentcore:DeleteMemory",
+          "bedrock-agentcore:RetrieveMemoryRecords",
         ]
         Resource = ["*"]
       },

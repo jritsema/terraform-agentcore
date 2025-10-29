@@ -11,7 +11,10 @@ args = parser.parse_args()
 
 client = boto3.client("bedrock-agentcore")
 payload = json.dumps({
-    "input": {"prompt": "Explain machine learning in simple terms"}
+    "input": {
+        "prompt": "Explain machine learning in simple terms",
+        "user_id": "123",
+    }
 })
 
 response = client.invoke_agent_runtime(
