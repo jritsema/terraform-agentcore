@@ -96,6 +96,9 @@ No modules.
 |------|------|
 | [aws_bedrockagentcore_agent_runtime.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_agent_runtime) | resource |
 | [aws_bedrockagentcore_memory.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_memory) | resource |
+| [aws_bedrockagentcore_memory_strategy.fact_extractor](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_memory_strategy) | resource |
+| [aws_bedrockagentcore_memory_strategy.preference_learner](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_memory_strategy) | resource |
+| [aws_bedrockagentcore_memory_strategy.session_summarizer](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_memory_strategy) | resource |
 | [aws_ecr_repository.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/ecr_repository) | resource |
 | [aws_iam_role.agentcore_runtime](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.agentcore_runtime](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/iam_role_policy) | resource |
@@ -123,4 +126,5 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_agentcore_runtime_arn"></a> [agentcore\_runtime\_arn](#output\_agentcore\_runtime\_arn) | ARN of the AgentCore runtime |
+| <a name="output_memory_id"></a> [memory\_id](#output\_memory\_id) | ID of the AgentCore memory |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
