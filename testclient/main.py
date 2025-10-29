@@ -7,19 +7,24 @@ import boto3
 parser = argparse.ArgumentParser()
 parser.add_argument("--agent-runtime-arn",
                     help="Agent Runtime ARN", required=True)
+parser.add_argument("--prompt",
+                    help="User prompt", required=True)
 args = parser.parse_args()
 
 client = boto3.client("bedrock-agentcore")
 payload = json.dumps({
     "input": {
-        "prompt": "Explain machine learning in simple terms",
+        "prompt": args.prompt,
         "user_id": "123",
     }
 })
 
+session_id = str(uuid.uuid4())
+print(f'sending prompt: "{args.prompt}" to {args.agent_runtime_arn} using session {session_id}')
+
 response = client.invoke_agent_runtime(
     agentRuntimeArn=args.agent_runtime_arn,
-    runtimeSessionId=str(uuid.uuid4()) + 'a' * 20,
+    runtimeSessionId=session_id,
     payload=payload,
 )
 

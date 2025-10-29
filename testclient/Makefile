@@ -34,9 +34,9 @@ install:
 %:
 	@:
 
-## start: run local project
-.PHONY: start
-start:
+## test: test remote agent. ex: make start prompt="explain machine learning in very simple terms"
+.PHONY: test
+test:
 	clear
 	@echo ""
-	./test.sh
+	./test.sh "$(prompt)"
