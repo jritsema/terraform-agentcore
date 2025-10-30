@@ -2,6 +2,7 @@ import json
 import argparse
 import uuid
 import boto3
+from botocore.config import Config
 
 # accept agent runtime arn as cli argument
 parser = argparse.ArgumentParser()
@@ -11,7 +12,14 @@ parser.add_argument("--prompt",
                     help="User prompt", required=True)
 args = parser.parse_args()
 
-client = boto3.client("bedrock-agentcore")
+# Configure client with increased timeout
+config = Config(
+    read_timeout=600,  # 5 minutes
+    connect_timeout=60,  # 1 minute
+    retries={'max_attempts': 3}
+)
+
+client = boto3.client("bedrock-agentcore", config=config)
 payload = json.dumps({
     "input": {
         "prompt": args.prompt,

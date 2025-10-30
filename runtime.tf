@@ -55,11 +55,13 @@ resource "aws_bedrockagentcore_agent_runtime" "main" {
   environment_variables = length(var.environment_variables) == 0 ? merge(
     { "DUMMY" = "placeholder" },
     var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {},
-    var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {}
+    var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {},
+    var.enable_browser ? { "BROWSER_ID" = aws_bedrockagentcore_browser.main[0].browser_id } : {}
     ) : merge(
     var.environment_variables,
     var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {},
-    var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {}
+    var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {},
+    var.enable_browser ? { "BROWSER_ID" = aws_bedrockagentcore_browser.main[0].browser_id } : {}
   )
 
   protocol_configuration {
