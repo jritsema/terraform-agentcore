@@ -112,6 +112,8 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_bedrockagentcore_agent_runtime.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_agent_runtime) | resource |
+| [aws_bedrockagentcore_browser.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_browser) | resource |
+| [aws_bedrockagentcore_code_interpreter.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_code_interpreter) | resource |
 | [aws_bedrockagentcore_memory.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_memory) | resource |
 | [aws_bedrockagentcore_memory_strategy.fact_extractor](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_memory_strategy) | resource |
 | [aws_bedrockagentcore_memory_strategy.preference_learner](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/bedrockagentcore_memory_strategy) | resource |
@@ -119,6 +121,9 @@ No modules.
 | [aws_ecr_repository.main](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/ecr_repository) | resource |
 | [aws_iam_role.agentcore_runtime](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.agentcore_runtime](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.browser](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.code_interpreter](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.memory](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/resources/iam_role_policy) | resource |
 | [docker_image.main](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs/resources/image) | resource |
 | [docker_registry_image.main](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs/resources/registry_image) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/6.18.0/docs/data-sources/caller_identity) | data source |
@@ -129,19 +134,25 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Default tags to apply to all resources | `map(string)` | `{}` | no |
 | <a name="input_dockerfile"></a> [dockerfile](#input\_dockerfile) | Path to the Dockerfile context directory | `string` | `"../agent"` | no |
+| <a name="input_enable_browser"></a> [enable\_browser](#input\_enable\_browser) | Enable AgentCore Browser | `bool` | `false` | no |
+| <a name="input_enable_code_interpreter"></a> [enable\_code\_interpreter](#input\_enable\_code\_interpreter) | Enable AgentCore Code Interpreter | `bool` | `false` | no |
 | <a name="input_enable_memory"></a> [enable\_memory](#input\_enable\_memory) | Enable AgentCore Memory | `bool` | `false` | no |
 | <a name="input_enable_runtime"></a> [enable\_runtime](#input\_enable\_runtime) | Enable AgentCore Runtime | `bool` | `true` | no |
 | <a name="input_environment_variables"></a> [environment\_variables](#input\_environment\_variables) | Environment variables for the AgentCore Runtime | `map(string)` | `{}` | no |
 | <a name="input_memory_short_term_expiration_days"></a> [memory\_short\_term\_expiration\_days](#input\_memory\_short\_term\_expiration\_days) | Memory short term expiration in days | `number` | `30` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name for the AgentCore resources | `string` | n/a | yes |
 | <a name="input_server_protocol"></a> [server\_protocol](#input\_server\_protocol) | Server protocol for AgentCore Runtime | `string` | `"HTTP"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Default tags to apply to all resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_agentcore_runtime_arn"></a> [agentcore\_runtime\_arn](#output\_agentcore\_runtime\_arn) | ARN of the AgentCore runtime |
+| <a name="output_browser_arn"></a> [browser\_arn](#output\_browser\_arn) | ARN of the AgentCore browser |
+| <a name="output_browser_id"></a> [browser\_id](#output\_browser\_id) | ID of the AgentCore browser |
+| <a name="output_code_interpreter_arn"></a> [code\_interpreter\_arn](#output\_code\_interpreter\_arn) | ARN of the AgentCore code interpreter |
+| <a name="output_code_interpreter_id"></a> [code\_interpreter\_id](#output\_code\_interpreter\_id) | ID of the AgentCore code interpreter |
 | <a name="output_memory_id"></a> [memory\_id](#output\_memory\_id) | ID of the AgentCore memory |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
