@@ -10,6 +10,8 @@ ACCESS_TOKEN=$(curl -s -X POST "$TOKEN_URL" \
   -d "grant_type=client_credentials&client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET" \
   | jq '.access_token' -r)
 
-echo "Gateway URL: $GATEWAY_URL"
+echo "Gateway URL:"
+echo "$GATEWAY_URL"
 echo""
-echo "Token: $ACCESS_TOKEN"
+echo "Token:"
+echo "$ACCESS_TOKEN"
