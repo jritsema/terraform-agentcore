@@ -34,7 +34,7 @@ install:
 %:
 	@:
 
-## test: test remote agent. ex: make start prompt="explain machine learning in very simple terms"
+## test: test remote agent. ex: make test prompt="explain machine learning in very simple terms"
 .PHONY: test
 test:
 	clear
