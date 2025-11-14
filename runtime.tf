@@ -50,18 +50,35 @@ resource "aws_bedrockagentcore_agent_runtime" "main" {
     }
   }
 
-  # Handle environment variables: add dummy value if empty to avoid provider bug,
-  # and include MEMORY_ID when memory is enabled
+  # Handle environment variables: add dummy value if empty to avoid provider bug
   environment_variables = length(var.environment_variables) == 0 ? merge(
     { "DUMMY" = "placeholder" },
     var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {},
     var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {},
-    var.enable_browser ? { "BROWSER_ID" = aws_bedrockagentcore_browser.main[0].browser_id } : {}
+    var.enable_browser ? { "BROWSER_ID" = aws_bedrockagentcore_browser.main[0].browser_id } : {},
+    var.enable_gateway ? {
+      "GATEWAY_ID"  = aws_bedrockagentcore_gateway.main[0].gateway_id,
+      "GATEWAY_URL" = aws_bedrockagentcore_gateway.main[0].gateway_url
+    } : {},
+    var.enable_gateway && var.use_cognito_for_auth ? {
+      "CLIENT_ID"     = aws_cognito_user_pool_client.gateway[0].id,
+      "CLIENT_SECRET" = aws_cognito_user_pool_client.gateway[0].client_secret,
+      "TOKEN_URL"     = local.token_url
+    } : {}
     ) : merge(
     var.environment_variables,
     var.enable_memory ? { "MEMORY_ID" = aws_bedrockagentcore_memory.main[0].id } : {},
     var.enable_code_interpreter ? { "CODE_INTERPRETER_ID" = aws_bedrockagentcore_code_interpreter.main[0].code_interpreter_id } : {},
-    var.enable_browser ? { "BROWSER_ID" = aws_bedrockagentcore_browser.main[0].browser_id } : {}
+    var.enable_browser ? { "BROWSER_ID" = aws_bedrockagentcore_browser.main[0].browser_id } : {},
+    var.enable_gateway ? {
+      "GATEWAY_ID"  = aws_bedrockagentcore_gateway.main[0].gateway_id,
+      "GATEWAY_URL" = aws_bedrockagentcore_gateway.main[0].gateway_url
+    } : {},
+    var.enable_gateway && var.use_cognito_for_auth ? {
+      "CLIENT_ID"     = aws_cognito_user_pool_client.gateway[0].id,
+      "CLIENT_SECRET" = aws_cognito_user_pool_client.gateway[0].client_secret,
+      "TOKEN_URL"     = local.token_url
+    } : {}
   )
 
   protocol_configuration {

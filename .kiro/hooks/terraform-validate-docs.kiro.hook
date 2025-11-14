@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Terraform Validation & Docs",
+  "description": "Automatically runs 'make checks' to validate Terraform configuration and update documentation whenever a .tf file is saved",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.tf"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A Terraform file has been modified. Run `make checks` to validate the Terraform configuration and update the Terraform documentation. Report the results of the validation and any documentation updates."
+  }
+}
