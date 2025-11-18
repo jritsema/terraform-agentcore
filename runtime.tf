@@ -61,9 +61,9 @@ resource "aws_bedrockagentcore_agent_runtime" "main" {
       "GATEWAY_URL" = aws_bedrockagentcore_gateway.main[0].gateway_url
     } : {},
     var.enable_gateway && var.use_cognito_for_auth ? {
-      "CLIENT_ID"     = aws_cognito_user_pool_client.gateway[0].id,
-      "CLIENT_SECRET" = aws_cognito_user_pool_client.gateway[0].client_secret,
-      "TOKEN_URL"     = local.token_url
+      "CREDENTIAL_PROVIDER_NAME" = aws_bedrockagentcore_oauth2_credential_provider.cognito[0].name,
+      "WORKLOAD_NAME"            = var.name,
+      "OAUTH_SCOPE"              = "${var.name}/invoke"
     } : {}
     ) : merge(
     var.environment_variables,
@@ -75,9 +75,9 @@ resource "aws_bedrockagentcore_agent_runtime" "main" {
       "GATEWAY_URL" = aws_bedrockagentcore_gateway.main[0].gateway_url
     } : {},
     var.enable_gateway && var.use_cognito_for_auth ? {
-      "CLIENT_ID"     = aws_cognito_user_pool_client.gateway[0].id,
-      "CLIENT_SECRET" = aws_cognito_user_pool_client.gateway[0].client_secret,
-      "TOKEN_URL"     = local.token_url
+      "CREDENTIAL_PROVIDER_NAME" = aws_bedrockagentcore_oauth2_credential_provider.cognito[0].name,
+      "WORKLOAD_NAME"            = var.name,
+      "OAUTH_SCOPE"              = "${var.name}/invoke"
     } : {}
   )
 
@@ -128,7 +128,7 @@ resource "aws_iam_role_policy" "agentcore_runtime" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
+    Statement = concat([
       {
         Sid    = "ECRImageAccess"
         Effect = "Allow"
@@ -203,7 +203,8 @@ resource "aws_iam_role_policy" "agentcore_runtime" {
         Action = [
           "bedrock-agentcore:GetWorkloadAccessToken",
           "bedrock-agentcore:GetWorkloadAccessTokenForJWT",
-          "bedrock-agentcore:GetWorkloadAccessTokenForUserId"
+          "bedrock-agentcore:GetWorkloadAccessTokenForUserId",
+          "bedrock-agentcore:CreateWorkloadIdentity",
         ]
         Resource = [
           "arn:aws:bedrock-agentcore:${local.region_account}:workload-identity-directory/default",
@@ -222,6 +223,30 @@ resource "aws_iam_role_policy" "agentcore_runtime" {
           "arn:aws:bedrock:${local.region_account}:*"
         ]
       },
-    ]
+      ],
+      var.enable_gateway && var.use_cognito_for_auth ? [{
+        Sid    = "GetResourceOauth2Token"
+        Effect = "Allow"
+        Action = [
+          "bedrock-agentcore:GetResourceOauth2Token"
+        ]
+        Resource = [
+          "arn:aws:bedrock-agentcore:${local.region_account}:token-vault/default",
+          "arn:aws:bedrock-agentcore:${local.region_account}:token-vault/default/oauth2credentialprovider/${aws_bedrockagentcore_oauth2_credential_provider.cognito[0].name}",
+          "arn:aws:bedrock-agentcore:${local.region_account}:workload-identity-directory/default",
+          "arn:aws:bedrock-agentcore:${local.region_account}:workload-identity-directory/default/workload-identity/*"
+        ]
+      },
+      {
+        Sid    = "SecretsManagerAccess"
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = [
+          "arn:aws:secretsmanager:${local.region_account}:secret:*"
+        ]
+      }] : []
+    )
   })
 }
