@@ -96,6 +96,25 @@ resource "aws_cognito_user_pool_client" "gateway" {
   depends_on = [aws_cognito_resource_server.gateway]
 }
 
+# OAuth2 Credential Provider for Cognito
+resource "aws_bedrockagentcore_oauth2_credential_provider" "cognito" {
+  count = var.enable_gateway && var.use_cognito_for_auth ? 1 : 0
+  name  = "${var.name}-cognito-credentials"
+
+  credential_provider_vendor = "CustomOauth2"
+  oauth2_provider_config {
+    custom_oauth2_provider_config {
+      client_id_wo                  = aws_cognito_user_pool_client.gateway[0].id
+      client_secret_wo              = aws_cognito_user_pool_client.gateway[0].client_secret
+      client_credentials_wo_version = 1
+
+      oauth_discovery {
+        discovery_url = "https://cognito-idp.${local.region}.amazonaws.com/${aws_cognito_user_pool.gateway[0].id}/.well-known/openid-configuration"
+      }
+    }
+  }
+}
+
 # AgentCore Gateway
 resource "aws_bedrockagentcore_gateway" "main" {
   count           = var.enable_gateway ? 1 : 0
